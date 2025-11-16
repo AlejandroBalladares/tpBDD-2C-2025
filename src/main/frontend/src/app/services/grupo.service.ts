@@ -5,14 +5,16 @@ import { catchError } from 'rxjs/operators';
 import { Grupo } from '../model/grupo';
 import { Excepcion } from '../model/excepcion';
 import { Gasto } from '../model/gasto';
+import { NombreService } from './nombre.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GrupoService {
 
-  constructor(private http: HttpClient) {
-
+  constructor(
+    private http: HttpClient,
+    private nombreService: NombreService) {
   }
 
   listar(): Observable<Grupo[]> {
@@ -32,15 +34,12 @@ export class GrupoService {
       .pipe(catchError(this.falloAlGuardar));
   }
 
-  agregarGasto(grupo: Grupo, monto: number): Observable<Grupo> {
-
-    const nuevoGasto: Gasto = {
-      monto,
-    }
-
-    return this.http.post<Grupo>(`/api/grupos/${grupo.id}/gastos`, nuevoGasto)
-      .pipe(catchError(this.falloAlGuardar));
-  }
+  agregarGasto(grupo: Grupo, gasto: Gasto): Observable<Grupo> {
+  gasto.nombre = this.nombreService.getNombre();
+  //console.log('DEBUG body a enviar ->', JSON.stringify(gasto));
+  return this.http.post<Grupo>(`/api/grupos/${grupo.id}/gastos`, gasto)
+    .pipe(catchError(this.falloAlGuardar));
+}
 
   falloAlGuardar(error: HttpErrorResponse) {
     return throwError(new Excepcion("No se puede guardar"));
