@@ -61,6 +61,16 @@ public class GruposService {
         return grupoBuscado.get();
     }
 
+    public Grupo cambiarNombre(Long id, String nombre) {
+        if (Strings.isBlank(nombre)) {
+            throw new GrupoInvalidoException();
+        }
+        Grupo grupo = recuperar(id);
+        
+        grupo.setNombre(nombre);
+        return repository.save(grupo);
+    }
+    
     public Grupo agregarGasto(Long id, Gasto gasto) {
 
         Grupo grupo = recuperar(id);

@@ -9,6 +9,7 @@ import ar.com.grupoesfera.repartir.services.GruposService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,6 +81,23 @@ public class GruposController {
             response = ResponseEntity.internalServerError().build();
         }
 
+        return response;
+    }
+
+    @PutMapping("/{id}/nombre")
+    public ResponseEntity<Grupo> cambiarNombre(@PathVariable Long id, @RequestBody String nombre) {
+
+        ResponseEntity<Grupo> response;
+        try {
+            Grupo grupo = grupos.cambiarNombre(id, nombre);
+            response = ResponseEntity.ok(grupo);
+        } catch (GrupoNoEncontradoException e) {
+            response = ResponseEntity.notFound().build();
+        } catch (GrupoInvalidoException e) {
+            response = ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            response = ResponseEntity.internalServerError().build();
+        }
         return response;
     }
 
