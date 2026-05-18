@@ -13,7 +13,7 @@ public class CompuestoPorMenosDeSeisMiembros extends FastCucumberSteps {
     private Grupo grupo;
 
     @Cuando("el usuario intenta crear un grupo indicando seis miembros")
-    public void elUsuarioIntentaCrearUnGrupoIndicandoUnUnicoMiembro() {
+    public void elUsuarioIntentaCrearUnGrupoIndicandoSeisMiembros() {
 
         List<String> miembros = new LinkedList<String>();
         miembros.add( "Emilio" );
@@ -26,9 +26,10 @@ public class CompuestoPorMenosDeSeisMiembros extends FastCucumberSteps {
 
         grupo.setMiembros( miembros );
     }
+    
 
     @Entonces("no debería crear el grupo con un seis miembros")
-    public void noDeberiaCrearElGrupoConUnUnicoMiembro() {
+    public void noDeberiaCrearElGrupoConUnSeisMiembros() {
 
         assertThat( this.grupo.estaFormado() ).isFalse();
     }
