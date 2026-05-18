@@ -22,12 +22,15 @@ public class GruposService {
     MontosService montos;
 
     public List<Grupo> listarGrupos() {
+
         return  repository.findAll();
     }
 
     public Grupo crear(Grupo nuevoGrupo) {
+
         validar(nuevoGrupo);
         guardar(nuevoGrupo);
+
         return nuevoGrupo;
     }
 
@@ -40,31 +43,30 @@ public class GruposService {
         if (!nuevoGrupo.estaFormado()) {
             throw new GrupoInvalidoException();
         }
+
         if (Strings.isBlank(nuevoGrupo.getNombre())) {
             throw new GrupoInvalidoException();
+
         }
     }
 
     public Grupo recuperar(Long id) {
+
         Optional<Grupo> grupoBuscado = repository.findById(id);
 
         if (!grupoBuscado.isPresent()) {
             throw new GrupoNoEncontradoException();
         }
+
         return grupoBuscado.get();
     }
 
     public Grupo agregarGasto(Long id, Gasto gasto) {
 
-        String nombre = gasto.getNombre();
         Grupo grupo = recuperar(id);
-        List<String> miembros = grupo.getMiembros();
-
         montos.acumularAlTotal(grupo, gasto);
-        if (nombre != null && !nombre.isBlank() && !miembros.contains(nombre)) {
-            miembros.add(nombre);
-        }
         repository.save(grupo);
         return grupo;
     }
+
 }

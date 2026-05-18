@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +15,7 @@ public class Bienvenida extends UITest {
         driver.navigate().to(url("/"));
 
         var bienvenidaDialog = driver.findElement(By.tagName("p-dialog"));
-        new WebDriverWait(driver, 5).until(ExpectedConditions.textToBePresentInElement(bienvenidaDialog, "Repartir"));
+
         var contenido = bienvenidaDialog.getText();
         assertThat(contenido).contains("Repartir");
 

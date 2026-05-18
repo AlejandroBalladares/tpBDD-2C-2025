@@ -28,7 +28,3 @@ http://localhost:8080/
 http://localhost:8080/swagger-ui.html
 
 ##
-
-Para que funcione
-en el src/main/frontend ejecutar: $env:NODE_OPTIONS="--openssl-legacy-provider"
-npm run build

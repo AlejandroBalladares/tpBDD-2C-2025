@@ -3,6 +3,7 @@ package ar.com.grupoesfera.repartir.controllers;
 import ar.com.grupoesfera.repartir.exceptions.GrupoInvalidoException;
 import ar.com.grupoesfera.repartir.model.Gasto;
 import ar.com.grupoesfera.repartir.model.Grupo;
+import ar.com.grupoesfera.repartir.repositories.GruposRepository;
 import ar.com.grupoesfera.repartir.exceptions.GrupoNoEncontradoException;
 import ar.com.grupoesfera.repartir.services.GruposService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,23 +26,36 @@ public class GruposController {
 
     @GetMapping
     public ResponseEntity<List<Grupo>> listar() {
+
         ResponseEntity<List<Grupo>> response;
+
         try {
+
             response = ResponseEntity.ok(grupos.listarGrupos());
+
         } catch (Exception e) {
+
             response = ResponseEntity.internalServerError().build();
         }
+
         return  response;
     }
 
     @PostMapping
     public ResponseEntity<Grupo> crear(@RequestBody Grupo grupo) {
+
         ResponseEntity<Grupo> response;
+
         try {
+
             response = ResponseEntity.ok(grupos.crear(grupo));
+
         } catch (GrupoInvalidoException e) {
+
             response = ResponseEntity.badRequest().build();
+
         } catch (Exception e) {
+
             response = ResponseEntity.internalServerError().build();
         }
 
@@ -55,10 +68,15 @@ public class GruposController {
         ResponseEntity<Grupo> response;
 
         try {
+
             response = ResponseEntity.ok(grupos.recuperar(id));
+
         } catch (GrupoNoEncontradoException e) {
+
             response = ResponseEntity.notFound().build();
+
         } catch (Exception e) {
+
             response = ResponseEntity.internalServerError().build();
         }
 
@@ -66,27 +84,25 @@ public class GruposController {
     }
 
     @PostMapping("/{id}/gastos")
-public ResponseEntity<Grupo> agregarGasto(
-        @PathVariable Long id,
-        @RequestBody Gasto gasto
-) {
+    public ResponseEntity<Grupo> agregarGasto(@PathVariable Long id, @RequestBody Gasto gasto) {
 
-    ResponseEntity<Grupo> response;
+        ResponseEntity<Grupo> response;
 
-    try {
-        if (gasto.getNombre() == null || gasto.getNombre().isBlank()) {
-            gasto.setNombre("nombre nulo");
+        try {
+
+            Grupo grupo = grupos.agregarGasto(id, gasto);
+
+            response = ResponseEntity.ok(grupo);
+
+        } catch (GrupoNoEncontradoException e) {
+
+            response = ResponseEntity.notFound().build();
+
+        } catch (Exception e) {
+
+            response = ResponseEntity.internalServerError().build();
         }
-        Grupo grupo = grupos.agregarGasto(id, gasto);
-        response = ResponseEntity.ok(grupo);
 
-    } catch (GrupoNoEncontradoException e) {
-        response = ResponseEntity.notFound().build();
-
-    } catch (Exception e) {
-        response = ResponseEntity.internalServerError().build();
+        return response;
     }
-
-    return response;
-}
 }

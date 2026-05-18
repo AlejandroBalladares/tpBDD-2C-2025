@@ -5,7 +5,6 @@ import { MessageService } from 'primeng/api';
 import { Grupo } from '../../model/grupo';
 import { IdentificarGrupoPipe } from '../../pipes/identificar-grupo.pipe';
 import { GrupoService } from '../../services/grupo.service';
-import { NombreService } from '../../services/nombre.service';
 
 @Component({
   selector: 'app-gasto-nuevo',
@@ -16,7 +15,7 @@ export class GastoNuevoComponent implements OnInit {
 
   mostrar: boolean = false;
 
-  grupo: Grupo;
+  grupo: Grupo ;
 
   monto: number = 0.0;
 
@@ -25,39 +24,36 @@ export class GastoNuevoComponent implements OnInit {
   constructor(
     private grupoService: GrupoService,
     private messageService: MessageService,
-    private identificarGrupo: IdentificarGrupoPipe,
-    private nombreService: NombreService
-  ) { }
+    private identificarGrupo: IdentificarGrupoPipe) {
 
-  ngOnInit(): void { }
+  }
+
+  ngOnInit(): void {
+
+  }
 
   iniciarPara(grupo: Grupo): void {
+
     this.mostrar = true;
     this.grupo = grupo;
     this.monto = 0.0;
   }
 
   cancelar(): void {
+
     this.mostrar = false;
   }
 
   guardar(): void {
 
-    const usuario = this.nombreService.getNombre();
-    //console.log('DEBUG NombreService.getNombre() ->', usuario, ' tipo:', typeof usuario);
-    const gasto = {
-      monto: this.monto,
-      nombre: usuario
-    };
-
-    this.grupoService.agregarGasto(this.grupo, gasto)
-      .subscribe(
-        grupo => this.guardadoExitoso(grupo),
-        error => this.guardadoFallido(error)
-      );
+    this.grupoService.agregarGasto(this.grupo, this.monto).subscribe(
+      grupo => this.guardadoExitoso(grupo),
+      error => this.guardadoFallido(error)
+    );
   }
 
   private guardadoExitoso(grupo: Grupo): void {
+
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',
@@ -68,6 +64,7 @@ export class GastoNuevoComponent implements OnInit {
   }
 
   private guardadoFallido(error: any): void {
+
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
