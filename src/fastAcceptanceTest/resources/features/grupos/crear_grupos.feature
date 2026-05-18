@@ -13,3 +13,7 @@ Característica: Crear Grupo para repartir gastos
     Escenario: No puedo crear un grupo con seis miembros
       Cuando el usuario intenta crear un grupo indicando seis miembros
       Entonces no debería crear el grupo con un seis miembros
+
+    Escenario: Crea un grupo con cinco miembros
+      Cuando el usuario crea un grupo indicando indicando cinco miembros
+      Entonces visualiza dentro del listado el grupo con los miembros indicados
