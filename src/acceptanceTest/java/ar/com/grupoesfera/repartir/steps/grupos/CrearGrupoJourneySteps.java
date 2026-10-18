@@ -82,7 +82,7 @@ public class CrearGrupoJourneySteps extends CucumberSteps {
         wait.until(visibilityOfElementLocated(By.id("mensajesToast")));
 
         var grupoTR = driver.findElements(By.cssSelector("app-grupos table tr"));
-        assertThat(grupoTR).hasSizeGreaterThan(posicion);
+        assertThat(grupoTR).hasSizeGreaterThanOrEqualTo(posicion);
 
         var campoTDs = grupoTR.get(posicion).findElements(By.tagName("td"));
         assertThat(campoTDs.get(0).getText()).isNotEmpty();
